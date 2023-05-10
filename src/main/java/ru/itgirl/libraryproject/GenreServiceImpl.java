@@ -2,9 +2,7 @@ package ru.itgirl.libraryproject;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.itgirl.libraryproject.dto.AuthorDto;
-import ru.itgirl.libraryproject.dto.BookDto;
-import ru.itgirl.libraryproject.dto.GenreDto;
+import ru.itgirl.libraryproject.dto.*;
 import ru.itgirl.libraryproject.model.Book;
 import ru.itgirl.libraryproject.model.Genre;
 import ru.itgirl.libraryproject.repository.GenreRepository;
@@ -32,7 +30,7 @@ public class GenreServiceImpl implements GenreService {
         String nameOfTheGenre = genre.getName();
 
         //get books with this genre
-        List<BookDto> bookDtoList = genre.getBooks()
+        List<BookWithoutGenreDto> bookDtoList = genre.getBooks()
                 .stream()
                 .map(book -> {
                     //get name of the book
@@ -42,9 +40,9 @@ public class GenreServiceImpl implements GenreService {
                     Long idOfBook = book.getId();
 
                     //get authors of the book
-                    List<AuthorDto> authorDtoList = book.getAuthors()
+                    List<AuthorWithoutBooksDto> authorDtoList = book.getAuthors()
                             .stream()
-                            .map(author -> AuthorDto.builder()
+                            .map(author -> AuthorWithoutBooksDto.builder()
                                     .id(author.getId())
                                     .name(author.getName())
                                     .surname(author.getSurname())
@@ -52,7 +50,7 @@ public class GenreServiceImpl implements GenreService {
                             ).toList();
 
                     //build book
-                    return BookDto.builder()
+                    return BookWithoutGenreDto.builder()
                             .id(idOfBook)
                             .name(nameOfBook)
                             .authors(authorDtoList)

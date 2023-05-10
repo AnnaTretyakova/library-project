@@ -1,23 +1,19 @@
 package ru.itgirl.libraryproject.dto;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.itgirl.libraryproject.model.Book;
 
 import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class GenreDto {
+
+public class BookWithoutGenreDto {
     private Long id;
     private String name;
-    private List<BookWithoutGenreDto> books;
+    private List<AuthorWithoutBooksDto> authors;
 }
