@@ -1,6 +1,11 @@
-package ru.itgirl.libraryproject;
+package ru.itgirl.libraryproject.service;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.itgirl.libraryproject.dto.AuthorDto;
 import ru.itgirl.libraryproject.dto.BookDto;
@@ -24,6 +29,51 @@ public class AuthorServiceImpl implements AuthorService {
         Author author = authorRepository.findById(id).orElseThrow();
         return convertToDto(author);
     }
+
+    @Override
+    public List<AuthorDto> getByNameV1(String name){
+        //Author author = authorRepository.findAuthorByName(name).orElseThrow();
+        List<Author> authors = authorRepository.findAuthorByName(name);
+        return authors.stream().map(author -> convertToDto(author)).toList();
+    }
+
+    @Override
+    public List<AuthorDto> getByNameV2(String name){
+        //Author author = authorRepository.findAuthorByNameBySQL(name).orElseThrow();
+        //return convertToDto(author);
+        List<Author> authors = authorRepository.findAuthorByNameBySQL(name);
+        return authors.stream().map(author -> convertToDto(author)).toList();
+
+    }
+
+    @Override
+    public List<AuthorDto> getByNameV3(String name){
+        Specification<Author> specification = Specification.where(
+                new Specification<Author>() {
+                    @Override
+                    public Predicate toPredicate(Root<Author> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                        return cb.equal(root.get("name"),name);
+                    }
+                }
+        );
+        List<Author> authors = authorRepository.findAll(specification);
+        return authors.stream().map(author -> convertToDto(author)).toList();
+    }
+
+    @Override
+    public AuthorDto getByNameAndSurname(String name, String surname){
+        Author author = authorRepository.findAuthorByNameAndSurname(name, surname);
+        return convertToDto(author);
+    }
+
+    @Override
+    public AuthorDto getByNameAndSurnameSQL(String name, String surname){
+        Author author = authorRepository.findAuthorByNameAndSurnameBySQL(name, surname);
+        return convertToDto(author);
+    }
+
+
+
 
     private AuthorDto convertToDto(Author author) {
 
@@ -67,5 +117,7 @@ public class AuthorServiceImpl implements AuthorService {
                 .surname(author.getSurname())
                 .build();
     }
+
+
 
 }

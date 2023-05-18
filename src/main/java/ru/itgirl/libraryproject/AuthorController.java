@@ -1,24 +1,53 @@
 package ru.itgirl.libraryproject;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.itgirl.libraryproject.dto.AuthorDto;
 import ru.itgirl.libraryproject.service.AuthorService;
 
+import java.util.List;
+
 @RestController
+@RequiredArgsConstructor
 
 public class AuthorController {
 
     private final AuthorService authorService;
 
-    public AuthorController(AuthorService authorService) {
-        this.authorService = authorService;
-    }
 
     @GetMapping("/author/{id}")
     AuthorDto getAuthorById(@PathVariable("id") Long id) {
         return authorService.getAuthorById(id);
     }
+
+    @GetMapping("/author/v1")
+    List<AuthorDto> getByNameV1(@RequestParam("name") String name){
+        return authorService.getByNameV1(name);
+    }
+
+    @GetMapping("/author/v2")
+    List<AuthorDto> getByNameV2(@RequestParam("name") String name){
+        return authorService.getByNameV2(name);
+    }
+
+    @GetMapping("/author/v3")
+    List<AuthorDto> getByNameV3(@RequestParam("name") String name){
+        return authorService.getByNameV3(name);
+    }
+
+    @GetMapping("/author/v4") // http://localhost:8080/author?name=Лев&surname=Толстой
+    AuthorDto getByNameAndSurnameV1(@RequestParam("name") String name, @RequestParam ("surname") String surname){
+        return authorService.getByNameAndSurname(name, surname);
+    }
+
+    @GetMapping("/author/v5") // http://localhost:8080/author?name=Лев&surname=Толстой
+    AuthorDto getByNameAndSurnameV2(@RequestParam("name") String name, @RequestParam ("surname") String surname){
+        return authorService.getByNameAndSurnameSQL(name, surname);
+    }
+
+    //ToDo: написать v6 со спецификацией, где указаны и имя и фамилия автора
 
 }
