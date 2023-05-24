@@ -9,7 +9,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.itgirl.libraryproject.dto.BookDto;
 import ru.itgirl.libraryproject.model.Book;
+import ru.itgirl.libraryproject.model.Genre;
 import ru.itgirl.libraryproject.repository.BookRepository;
+import ru.itgirl.libraryproject.repository.GenreRepository;
 import ru.itgirl.libraryproject.service.BookService;
 
 import javax.swing.text.html.HTMLDocument;
@@ -18,6 +20,7 @@ import javax.swing.text.html.HTMLDocument;
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+    private final GenreRepository genreRepository;
     @Override
     public BookDto getByNameV1(String name){
         Book book = bookRepository.findBookByName(name).orElseThrow();
@@ -43,8 +46,6 @@ public class BookServiceImpl implements BookService {
         Book book = bookRepository.findOne(specification).orElseThrow();
         return convertEntityToDto(book);
     }
-
-
     private BookDto convertEntityToDto(Book book) {
         return BookDto.builder()
                 .id(book.getId())

@@ -1,11 +1,10 @@
 package ru.itgirl.libraryproject;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.itgirl.libraryproject.dto.AuthorCreateDto;
 import ru.itgirl.libraryproject.dto.AuthorDto;
+import ru.itgirl.libraryproject.dto.AuthorUpdateDto;
 import ru.itgirl.libraryproject.service.AuthorService;
 
 import java.util.List;
@@ -50,4 +49,17 @@ public class AuthorController {
 
     //ToDo: написать v6 со спецификацией, где указаны и имя и фамилия автора
 
+    @PostMapping("/author/create")
+    AuthorDto createAuthor(@RequestBody AuthorCreateDto authorCreateDto) {
+        return authorService.createAuthor(authorCreateDto);
+    }
+    @PutMapping("/author/update")
+    AuthorDto updateAuthor(@RequestBody AuthorUpdateDto authorUpdateDto) {
+        return authorService.updateAuthor(authorUpdateDto);
+    }
+
+    @DeleteMapping("/author/delete/{id}")
+    void deleteAuthor(@PathVariable("id") Long id){
+        authorService.deleteAuthor(id);
+    }
 }
