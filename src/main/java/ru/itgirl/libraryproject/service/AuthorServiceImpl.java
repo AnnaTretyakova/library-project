@@ -33,14 +33,14 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDto> getByNameV1(String name){
+    public List<AuthorDto> getByNameV1(String name) {
         //Author author = authorRepository.findAuthorByName(name).orElseThrow();
         List<Author> authors = authorRepository.findAuthorByName(name);
         return authors.stream().map(author -> convertToDto(author)).toList();
     }
 
     @Override
-    public List<AuthorDto> getByNameV2(String name){
+    public List<AuthorDto> getByNameV2(String name) {
         //Author author = authorRepository.findAuthorByNameBySQL(name).orElseThrow();
         //return convertToDto(author);
         List<Author> authors = authorRepository.findAuthorByNameBySQL(name);
@@ -49,12 +49,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDto> getByNameV3(String name){
+    public List<AuthorDto> getByNameV3(String name) {
         Specification<Author> specification = Specification.where(
                 new Specification<Author>() {
                     @Override
                     public Predicate toPredicate(Root<Author> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                        return cb.equal(root.get("name"),name);
+                        return cb.equal(root.get("name"), name);
                     }
                 }
         );
@@ -63,13 +63,13 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDto getByNameAndSurname(String name, String surname){
+    public AuthorDto getByNameAndSurname(String name, String surname) {
         Author author = authorRepository.findAuthorByNameAndSurname(name, surname);
         return convertToDto(author);
     }
 
     @Override
-    public AuthorDto getByNameAndSurnameSQL(String name, String surname){
+    public AuthorDto getByNameAndSurnameSQL(String name, String surname) {
         Author author = authorRepository.findAuthorByNameAndSurnameBySQL(name, surname);
         return convertToDto(author);
     }
@@ -83,7 +83,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto){
+    public AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto) {
         Long id = authorUpdateDto.getId();
         Author author = authorRepository.findById(id).orElseThrow();
         author.setName(authorUpdateDto.getName());
@@ -94,7 +94,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteAuthor(Long id){
+    public void deleteAuthor(Long id) {
         authorRepository.deleteById(id);
     }
 
@@ -129,9 +129,6 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
 
-
-
-
     private AuthorDto convertToDto(Author author) {
 
         //get list of the books for the author
@@ -147,7 +144,7 @@ public class AuthorServiceImpl implements AuthorService {
             Long idOfBook = book.getId();
 
             //build book
-            BookDto builtBook= BookDto.builder()
+            BookDto builtBook = BookDto.builder()
                     .genre(nameOfGenre)
                     .name(nameOfBook)
                     .id(idOfBook)
@@ -174,7 +171,6 @@ public class AuthorServiceImpl implements AuthorService {
                 .surname(author.getSurname())
                 .build();
     }
-
 
 
 }

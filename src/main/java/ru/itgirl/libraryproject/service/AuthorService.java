@@ -10,7 +10,9 @@ public interface AuthorService {
     AuthorDto getAuthorById(Long id);
 
     List<AuthorDto> getByNameV1(String name);
+
     List<AuthorDto> getByNameV2(String name);
+
     List<AuthorDto> getByNameV3(String name);
 
     AuthorDto getByNameAndSurname(String name, String surname);
@@ -18,7 +20,9 @@ public interface AuthorService {
     AuthorDto getByNameAndSurnameSQL(String name, String surname);
 
     public AuthorDto createAuthor(AuthorCreateDto authorCreateDto);
+
     public AuthorDto updateAuthor(AuthorUpdateDto authorUpdateDto);
+
     public void deleteAuthor(Long id);
 
 }
