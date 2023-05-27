@@ -13,6 +13,9 @@ import ru.itgirl.libraryproject.repository.BookRepository;
 import ru.itgirl.libraryproject.service.BookService;
 
 import javax.swing.text.html.HTMLDocument;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +47,14 @@ public class BookServiceImpl implements BookService {
         return convertEntityToDto(book);
     }
 
+    @Override
+    public List<BookDto> getAllBooks(){
+        List<Book> books = bookRepository.findAll();
+
+        Stream<BookDto> b = books.stream().map(this::convertEntityToDto);
+
+        return books.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+    }
 
     private BookDto convertEntityToDto(Book book) {
         return BookDto.builder()
