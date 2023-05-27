@@ -12,11 +12,12 @@ public interface BookService {
     BookDto getByNameV2(String name);
 
     BookDto getByNameV3(String name);
-    List<BookDto> getAllBooks();
 
     BookDto createBook(BookCreateDto bookCreateDto);
 
     BookDto updateBook(BookUpdateDto bookUpdateDto);
 
     void deleteBook(Long id);
+
+    List<BookDto> getAllBooks();
 }

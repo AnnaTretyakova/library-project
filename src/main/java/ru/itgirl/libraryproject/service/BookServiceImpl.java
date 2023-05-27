@@ -61,14 +61,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getAllBooks(){
-        List<Book> books = bookRepository.findAll();
-
-        Stream<BookDto> b = books.stream().map(this::convertEntityToDto);
-
-        return books.stream().map(this::convertEntityToDto).collect(Collectors.toList());
-    }
-    @Override
     public BookDto updateBook(BookUpdateDto bookUpdateDto) {
         Book book = bookRepository.findById(bookUpdateDto.getId()).orElseThrow();
         book.setName(bookUpdateDto.getName());
@@ -81,6 +73,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BookDto> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+        //same as books.stream().map(book -> convertEntityToDto(book)).toList();
     }
 
     private BookDto convertEntityToDto(Book book) {
