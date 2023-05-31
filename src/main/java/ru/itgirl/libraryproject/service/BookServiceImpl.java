@@ -17,6 +17,7 @@ import ru.itgirl.libraryproject.repository.BookRepository;
 import ru.itgirl.libraryproject.repository.GenreRepository;
 
 import javax.swing.text.html.HTMLDocument;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
