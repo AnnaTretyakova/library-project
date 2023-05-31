@@ -16,7 +16,11 @@ import ru.itgirl.libraryproject.model.Genre;
 import ru.itgirl.libraryproject.repository.BookRepository;
 import ru.itgirl.libraryproject.repository.GenreRepository;
 
+import javax.swing.text.html.HTMLDocument;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +74,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BookDto> getAllBooks() {
+        List<Book> books = bookRepository.findAll();
+        return books.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+        //same as books.stream().map(book -> convertEntityToDto(book)).toList();
     }
 
     private BookDto convertEntityToDto(Book book) {
