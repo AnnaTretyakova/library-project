@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.itgirl.libraryproject.model.Users;
 import ru.itgirl.libraryproject.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -54,12 +56,15 @@ public class SecurityConfig {
     }*/
 
     @Bean
-    @Transactional
+    //@Transactional
     public UserDetailsService users() {
         User.UserBuilder users = User.withDefaultPasswordEncoder();
         Users user1 = usersRepository.findUsersByUsername("manager");
-        user1.getRoles();
-        List<String> roles = user1.getRoles();
+        List<String> roles = usersRepository.findRolesByUsernameBySQL("manager");
+        //Collection<String> roles = user1.getRoles();
+
+        Users user2 = usersRepository.findUsersByUsername("admin");
+        ArrayList<String> roles2 = usersRepository.findRolesByUsernameBySQL("admin");
 
         UserDetails user = users
                 .username(usersRepository.findUsersByUsername("user").getUsername())

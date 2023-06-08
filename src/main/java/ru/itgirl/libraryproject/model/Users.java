@@ -1,8 +1,14 @@
 package ru.itgirl.libraryproject.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -11,8 +17,7 @@ import java.util.Set;
 @Builder
 @Getter
 @Entity
-
-
+@Table(name = "users")
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +26,8 @@ public class Users {
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column
     @ElementCollection
+    //@CollectionTable(name="users_roles")
+    //@Column(name = "roles")
     private List<String> roles;
 }
