@@ -21,7 +21,6 @@ public class Users {
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column
     @ElementCollection
     private List<String> roles;
 }

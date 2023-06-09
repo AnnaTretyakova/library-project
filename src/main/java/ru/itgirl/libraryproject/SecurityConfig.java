@@ -36,8 +36,7 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-    /*@Bean
+    @Bean
     public UserDetailsService users() {
         User.UserBuilder users = User.withDefaultPasswordEncoder();
         UserDetails user = users
@@ -51,28 +50,5 @@ public class SecurityConfig {
                 .roles("USER", "ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
-    }*/
-
-    @Bean
-    @Transactional
-    public UserDetailsService users() {
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
-        Users user1 = usersRepository.findUsersByUsername("manager");
-        user1.getRoles();
-        List<String> roles = user1.getRoles();
-
-        UserDetails user = users
-                .username(usersRepository.findUsersByUsername("user").getUsername())
-                .password("password")
-                .roles("USER")
-                .build();
-        UserDetails admin = users
-                .username("admin")
-                .password("password")
-                .roles("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
     }
-
-
 }
