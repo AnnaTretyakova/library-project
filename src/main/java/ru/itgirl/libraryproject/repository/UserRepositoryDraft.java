@@ -6,7 +6,7 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class URepository{
+public class UserRepositoryDraft {
     @PersistenceContext
     private EntityManager entityManager;
 

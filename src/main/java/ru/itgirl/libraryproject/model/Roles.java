@@ -13,14 +13,17 @@ import java.util.Set;
 @Builder
 @Getter
 @Entity
-public class Users {
+public class Roles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String username;
-    @Column(nullable = false)
-    private String password;
-    @ManyToMany(mappedBy = "users")
-    private Set<Roles> roles;
+    private String rolename;
+    @ManyToMany
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    private Set<Users> users;
 }

@@ -10,22 +10,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.transaction.annotation.Transactional;
-import ru.itgirl.libraryproject.model.Users;
-import ru.itgirl.libraryproject.repository.UserRepository;
+import ru.itgirl.libraryproject.service.UserService;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
 
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final UserRepository usersRepository;
 
-
+    private final UserService userService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -56,28 +51,21 @@ public class SecurityConfig {
     }*/
 
     @Bean
-    //@Transactional
-    public UserDetailsService users() {
+    public UserDetailsService users(){
         User.UserBuilder users = User.withDefaultPasswordEncoder();
-        Users user1 = usersRepository.findUsersByUsername("manager");
-        List<String> roles = usersRepository.findRolesByUsernameBySQL("manager");
-        //Collection<String> roles = user1.getRoles();
+        HashMap<String, String> userData1 = userService.getInformationAboutUserAsHashMap(1L);
+        HashMap<String, String> userData2 = userService.getInformationAboutUserAsHashMap(2L);
+        UserDetails user1 = buildUserDetails(users, userData1);
+        UserDetails user2 = buildUserDetails(users, userData2);
+        return new InMemoryUserDetailsManager(user1, user2);
 
-        Users user2 = usersRepository.findUsersByUsername("admin");
-        ArrayList<String> roles2 = usersRepository.findRolesByUsernameBySQL("admin");
-
-        UserDetails user = users
-                .username(usersRepository.findUsersByUsername("user").getUsername())
-                .password("password")
-                .roles("USER")
-                .build();
-        UserDetails admin = users
-                .username("admin")
-                .password("password")
-                .roles("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
     }
 
-
+    private static UserDetails buildUserDetails(User.UserBuilder users, HashMap<String, String> userData) {
+        return users
+                .username(userData.get("username"))
+                .password(userData.get("passwords"))
+                .roles(userData.get("roles"))
+                .build();
+    }
 }
