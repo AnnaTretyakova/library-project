@@ -21,6 +21,6 @@ public class Users {
     private String username;
     @Column(nullable = false)
     private String password;
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "users")
     private Set<Roles> roles;
 }

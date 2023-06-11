@@ -10,9 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.itgirl.libraryproject.dto.UserTestDto;
 import ru.itgirl.libraryproject.service.UserService;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 @Configuration
@@ -30,7 +32,6 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 )
                 .httpBasic();
-
         return http.build();
     }
 
@@ -51,21 +52,30 @@ public class SecurityConfig {
     }*/
 
     @Bean
-    public UserDetailsService users(){
+    public UserDetailsService users() {
         User.UserBuilder users = User.withDefaultPasswordEncoder();
-        HashMap<String, String> userData1 = userService.getInformationAboutUserAsHashMap(1L);
-        HashMap<String, String> userData2 = userService.getInformationAboutUserAsHashMap(2L);
-        UserDetails user1 = buildUserDetails(users, userData1);
-        UserDetails user2 = buildUserDetails(users, userData2);
-        return new InMemoryUserDetailsManager(user1, user2);
+        UserTestDto userFromDb1 = userService.getById(1L);
+        UserTestDto userFromDb2 = userService.getById(2L);
 
-    }
+        List<String> userRoles1 = userFromDb1.getRoles();
+        String[] roles1 = new String[userRoles1.size()];
 
-    private static UserDetails buildUserDetails(User.UserBuilder users, HashMap<String, String> userData) {
-        return users
-                .username(userData.get("username"))
-                .password(userData.get("passwords"))
-                .roles(userData.get("roles"))
+        UserDetails user1 = users
+                .username(userFromDb1.getUsername())
+                .password(userFromDb1.getPassword())
+                .roles(userRoles1.toArray(roles1))
                 .build();
+
+        List<String> userRoles2 = userFromDb2.getRoles();
+        String[] roles2 = new String[userRoles2.size()];
+
+        UserDetails user2 = users
+                .username(userFromDb2.getUsername())
+                .password(userFromDb2.getPassword())
+                .roles(userRoles2.toArray(roles2))
+                .build();
+
+
+        return new InMemoryUserDetailsManager(user1, user2);
     }
 }
