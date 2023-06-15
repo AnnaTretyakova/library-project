@@ -10,9 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.transaction.annotation.Transactional;
-import ru.itgirl.libraryproject.model.Users;
-import ru.itgirl.libraryproject.repository.UserRepository;
+import ru.itgirl.libraryproject.dto.UserTestDto;
+import ru.itgirl.libraryproject.service.UserService;
 
 import java.util.List;
 
@@ -21,22 +20,22 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final UserRepository usersRepository;
 
-
+    private final UserService userService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeHttpRequests((authorize) ->
                         authorize.requestMatchers("/book").hasRole("USER")
                                 .requestMatchers("/book/v2").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .httpBasic();
-
         return http.build();
     }
-    @Bean
+
+    /*@Bean
     public UserDetailsService users() {
         User.UserBuilder users = User.withDefaultPasswordEncoder();
         UserDetails user = users
@@ -50,5 +49,33 @@ public class SecurityConfig {
                 .roles("USER", "ADMIN")
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
+    }*/
+
+    @Bean
+    public UserDetailsService users() {
+        User.UserBuilder users = User.withDefaultPasswordEncoder();
+        UserTestDto userFromDb1 = userService.getById(1L);
+        UserTestDto userFromDb2 = userService.getById(2L);
+
+        List<String> userRoles1 = userFromDb1.getRoles();
+        String[] roles1 = new String[userRoles1.size()];
+
+        UserDetails user1 = users
+                .username(userFromDb1.getUsername())
+                .password(userFromDb1.getPassword())
+                .roles(userRoles1.toArray(roles1))
+                .build();
+
+        List<String> userRoles2 = userFromDb2.getRoles();
+        String[] roles2 = new String[userRoles2.size()];
+
+        UserDetails user2 = users
+                .username(userFromDb2.getUsername())
+                .password(userFromDb2.getPassword())
+                .roles(userRoles2.toArray(roles2))
+                .build();
+
+
+        return new InMemoryUserDetailsManager(user1, user2);
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.itgirl.libraryproject.dto.AuthorCreateDto;
@@ -18,18 +19,29 @@ import ru.itgirl.libraryproject.service.AuthorService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository authorRepository;
 
     @Override
-    public AuthorDto getAuthorById(Long id) {
-        Author author = authorRepository.findById(id).orElseThrow();
-        return convertToDto(author);
+    public AuthorDto getAuthorById(Long id) throws NoSuchFieldException {
+        log.info("Try to find author by id {}", id);
+        Optional<Author> author = authorRepository.findById(id);
+        if(author.isPresent()){
+            AuthorDto authorDto = convertToDto(author.get());
+            log.info("Author: {}", authorDto.toString());
+            return authorDto;
+        } else {
+           log.error("Author with id {} not found", id);
+           throw new NoSuchFieldException("No value present");
+        }
+
     }
 
     @Override

@@ -8,7 +8,7 @@ import ru.itgirl.libraryproject.dto.BookDto;
 import java.util.List;
 
 public interface AuthorService {
-    AuthorDto getAuthorById(Long id);
+    AuthorDto getAuthorById(Long id) throws NoSuchFieldException;
 
     List<AuthorDto> getByNameV1(String name);
 
