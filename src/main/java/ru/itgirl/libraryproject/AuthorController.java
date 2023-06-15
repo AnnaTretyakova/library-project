@@ -1,6 +1,9 @@
 package ru.itgirl.libraryproject;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.web.bind.annotation.*;
 import ru.itgirl.libraryproject.dto.AuthorCreateDto;
 import ru.itgirl.libraryproject.dto.AuthorDto;
@@ -11,12 +14,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "library-users")
 
 public class AuthorController {
 
     private final AuthorService authorService;
 
 
+    @SneakyThrows
     @GetMapping("/author/{id}")
     AuthorDto getAuthorById(@PathVariable("id") Long id) {
         return authorService.getAuthorById(id);
@@ -52,7 +57,7 @@ public class AuthorController {
     //ToDo: написать v6 со спецификацией, где указаны и имя и фамилия автора
 
     @PostMapping("/author/create")
-    AuthorDto createAuthor(@RequestBody AuthorCreateDto authorCreateDto) {
+    AuthorDto createAuthor(@RequestBody @Valid AuthorCreateDto authorCreateDto) {
         return authorService.createAuthor(authorCreateDto);
     }
 
