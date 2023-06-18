@@ -17,9 +17,9 @@ public class AuthorUpdateDto {
     @NotNull(message = "Необходимо указать id")
     private Long id;
     @NotBlank(message = "Необходимо указать имя")
-    @Pattern(regexp = "[A-Za-z]", message = "Разрешены только символы из английского алфавита")
+    @Pattern(regexp = "[A-Za-z]+", message = "Разрешены только символы из английского алфавита")
     private String name;
     @NotBlank(message = "Необходимо указать фамилию")
-    @Pattern(regexp = "[A-Za-z@._äöüß]", message = "Разрешены только символы из английского алфавита, @, ., ä, ö, ü, ß")
+    @Pattern(regexp = "[A-Za-z@._äöüß]+", message = "Разрешены только символы из английского алфавита, @, ., ä, ö, ü, ß")
     private String surname;
 }
