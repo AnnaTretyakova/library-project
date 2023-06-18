@@ -27,27 +27,32 @@ public class AuthorController {
         return authorService.getAuthorById(id);
     }
 
+    @SneakyThrows
     @GetMapping("/author/v1")
     List<AuthorDto> getByNameV1(@RequestParam("name") String name) {
         return authorService.getByNameV1(name);
     }
 
+    @SneakyThrows
     @GetMapping("/author/v2")
     List<AuthorDto> getByNameV2(@RequestParam("name") String name) {
         return authorService.getByNameV2(name);
     }
 
+    @SneakyThrows
     @GetMapping("/author/v3")
     List<AuthorDto> getByNameV3(@RequestParam("name") String name) {
         return authorService.getByNameV3(name);
     }
 
+    @SneakyThrows
     @GetMapping("/author/v4")
         // http://localhost:8080/author?name=Лев&surname=Толстой
     AuthorDto getByNameAndSurnameV1(@RequestParam("name") String name, @RequestParam("surname") String surname) {
         return authorService.getByNameAndSurname(name, surname);
     }
 
+    @SneakyThrows
     @GetMapping("/author/v5")
         // http://localhost:8080/author?name=Лев&surname=Толстой
     AuthorDto getByNameAndSurnameV2(@RequestParam("name") String name, @RequestParam("surname") String surname) {
@@ -62,7 +67,7 @@ public class AuthorController {
     }
 
     @PutMapping("/author/update")
-    AuthorDto updateAuthor(@RequestBody AuthorUpdateDto authorUpdateDto) {
+    AuthorDto updateAuthor(@RequestBody @Valid AuthorUpdateDto authorUpdateDto) {
         return authorService.updateAuthor(authorUpdateDto);
     }
 

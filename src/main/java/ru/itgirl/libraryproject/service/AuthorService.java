@@ -10,15 +10,15 @@ import java.util.List;
 public interface AuthorService {
     AuthorDto getAuthorById(Long id) throws NoSuchFieldException;
 
-    List<AuthorDto> getByNameV1(String name);
+    List<AuthorDto> getByNameV1(String name) throws NoSuchFieldException;
 
-    List<AuthorDto> getByNameV2(String name);
+    List<AuthorDto> getByNameV2(String name) throws NoSuchFieldException;
 
-    List<AuthorDto> getByNameV3(String name);
+    List<AuthorDto> getByNameV3(String name) throws NoSuchFieldException;
 
-    AuthorDto getByNameAndSurname(String name, String surname);
+    AuthorDto getByNameAndSurname(String name, String surname) throws NoSuchFieldException;
 
-    AuthorDto getByNameAndSurnameSQL(String name, String surname);
+    AuthorDto getByNameAndSurnameSQL(String name, String surname) throws NoSuchFieldException;
 
     public AuthorDto createAuthor(AuthorCreateDto authorCreateDto);
 
